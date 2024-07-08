@@ -1,23 +1,29 @@
-module bcd(input num, output bcd);
+module bcd(input [3:0] num, output [3:0] bcd); //literal na data FLOW
+   reg [3:0] x;
 	always @ (num) begin
-		case (num) 
-			4'b0000	:	bcd = 0;
-			4'b0001	:	bcd = 1;
-			4'b0010	:	bcd = 2;
-			4'b0011	:	bcd = 3;
-			4'b0100	:	bcd = 4;
-			4'b0101	:	bcd = 5;
-			4'b0110	:	bcd = 6;
-			4'b0111	:	bcd = 7;
-			4'b1000	:	bcd = 8;
-			4'b1001	:	bcd = 9;
-			4'b1010	:	bcd = x;
-			4'b1011	:	bcd = x;
-			4'b1100	:	bcd = x;
-			4'b1100	:	bcd = x;
-			4'b1101	:	bcd = x;
-			4'b1110	:	bcd = x;
-			4'b1111	:	bcd = x;
-		endcase
+	   if (num >= 4'b1010) begin
+		  x = 4'bxxxx;
+	   end else begin
+		  x = num;
+	   end
 	end
+
+   assign bcd = x;
 endmodule
+
+module testbench;
+   reg [3:0] val;
+   wire [3:0] out;
+
+   bcd b(val, out);
+
+   initial fork
+	  #1 val = 4'b0001;
+	  #2 $monitor("%b", out); //important to note that monitor keeps showing per elapse
+	  #3 val = 4'b1010;
+	  #5 $finish;
+   join
+
+
+
+endmodule // testbench
