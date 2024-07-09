@@ -16,7 +16,7 @@ module dFF(input d, clk, reset, output q); //always hold output as wire
    assign q = Q; //bind intermediate variable to actual output
 endmodule; // dFF
 
-module cnt(input clk, reset, output da, db, dc);
+module cnt(input clk, reset, output da, db, dc); // dataflow modeling of counter
    wire ta,tb,tc;
 
    // assign the necessary next-state equations using the wires
