@@ -15,7 +15,7 @@ module tmr(input clk, set,
 
    reg       nullity;
 
-   always @ (posedge clk) begin
+   always @ (posedge clk or negedge clk) begin
       if (set | nullity) begin
          ht = 4'b0101;
          ho = 4'b1001;
@@ -91,7 +91,7 @@ module testbench;
 
    initial fork
       #2 set = 0;
-      #1000000 $finish;
+      #205379 $finish;
    join
 
 endmodule // testbench
