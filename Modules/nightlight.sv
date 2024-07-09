@@ -16,7 +16,7 @@ module tmr(input clk, set,
    reg       nullity;
 
    always @ (posedge clk) begin
-      if (set | ~nullity) begin
+      if (set | nullity) begin
          ht = 4'b0101;
          ho = 4'b1001;
          mt = 4'b0101;
@@ -57,18 +57,6 @@ module tmr(input clk, set,
       end // else: !if(set | ~nullity)
    end // always @ (posedge clk)
 
-   always @(posedge clk) begin
-      if (set) begin
-         ht = 4'b0101;
-         ho = 4'b1001;
-         mt = 4'b0101;
-         mo = 4'b1001;
-         st = 4'b0101;
-         so = 4'b1001;
-      end
-   end
-
-
    assign x5 = ht;
    assign x4 = ho;
    assign x3 = mt;
@@ -103,7 +91,7 @@ module testbench;
 
    initial fork
       #2 set = 0;
-      #2000 $finish;
+      #1000000 $finish;
    join
 
 endmodule // testbench
