@@ -12,15 +12,11 @@ module testbench;
    initial begin
       inp = 3'b000; // create 3-vector representing x1, x2, and cin (inputs)
       $monitor("x1=%b x2=%b cin=%b | cout=%b y=%b", inp[2],inp[1],inp[0],cout,y);
-      forever #1 inp = inp + 3'b001;
+      forever #1 inp = inp + 3'b001; //keep incrementing the inputs of the truth table
    end
 
    initial fork
       #1 $monitor("x1=%b x2=%b cin=%b | cout=%b y=%b", inp[2],inp[1],inp[0],cout, y);
-      #7 $finish;
+      #7 $finish
    join
-
-
-
-
 endmodule // testbench
