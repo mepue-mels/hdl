@@ -1,12 +1,12 @@
-module StateMachine(input clk, input [5:0] x, output y, output [3:0] state);
+module StateMachine(input clk, input [5:0] x, output [1:0] y, output [3:0] state);
    reg [3:0] State;
    reg [5:0] inp;
-   reg       flag;
+   reg [1:0] flag;
    
 
    initial begin
       State = 3'b000;
-      flag = 0;
+      flag = 2'b00;
    end
 
    always @( posedge clk ) begin
@@ -48,11 +48,11 @@ module StateMachine(input clk, input [5:0] x, output y, output [3:0] state);
             State = 3'b111;
          end
       end else if (State == 3'b110) begin
-         flag = 1;
+         flag = 3'b01;
          State = 3'b000;
          $display("Number equal to 101101");
       end else if (State == 3'b111) begin
-         flag = 0;
+         flag = 3'b10;
          State = 3'b000;
          $display("Number not equal to 101101");
       end
@@ -62,11 +62,11 @@ module StateMachine(input clk, input [5:0] x, output y, output [3:0] state);
    assign state = State;
 endmodule // recognizer
 
-module testbench;
+module testbench; //testbench for testing 101101 = 101101
    reg clk;
    reg [5:0] num;
    wire [3:0] state;
-   wire      flag;
+   wire [1:0] flag;
 
    StateMachine sm(clk, num, flag, state);
 
@@ -79,12 +79,16 @@ module testbench;
       forever #1 clk = ~clk;
    end
 
-   initial fork
-      #1 $monitor("clk=%b num=%b state=%b flag=%b", clk, num, state, flag);
-      #13 $finish;
+   always @ (clk) begin
+	if ( (flag == 2'b01) | (flag == 2'b10) ) begin  //stop condition
+		$finish;
+	end else begin
+		$monitor("%b", state);
+	end
+
+   end
+
+   initial fork 
+	   #100 $finish; // emergency halt just in case
    join
-
-
-
-
 endmodule // testbench
